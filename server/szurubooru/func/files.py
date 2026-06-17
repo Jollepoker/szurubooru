@@ -1,7 +1,9 @@
 import os
 from typing import Any, List, Optional
-
 from szurubooru import config
+from szurubooru.func import bunny
+import logging
+logger = logging.getLogger(__name__)
 
 
 def _get_full_path(path: str) -> str:
@@ -10,6 +12,12 @@ def _get_full_path(path: str) -> str:
 
 def delete(path: str) -> None:
     full_path = _get_full_path(path)
+    logger.info("[FILES] delete called for: %s", path)
+
+    if "bunny" in config.config:
+        logger.info("[FILES] bunny delete called for: %s", path)
+        bunny.delete(config.config, path)
+
     if os.path.exists(full_path):
         os.unlink(full_path)
 
@@ -30,10 +38,12 @@ def move(source_path: str, target_path: str) -> None:
 
 def get(path: str) -> Optional[bytes]:
     full_path = _get_full_path(path)
-    if not os.path.exists(full_path):
-        return None
-    with open(full_path, "rb") as handle:
-        return handle.read()
+
+    if os.path.exists(full_path):
+        with open(full_path, "rb") as handle:
+            return handle.read()
+
+    return None
 
 
 def save(path: str, content: bytes) -> None:
@@ -41,3 +51,9 @@ def save(path: str, content: bytes) -> None:
     os.makedirs(os.path.dirname(full_path), exist_ok=True)
     with open(full_path, "wb") as handle:
         handle.write(content)
+    if path.startswith("temporary-uploads/"):
+        return
+
+    if "bunny" in config.config:
+        bunny.upload(config.config, path, content)
+

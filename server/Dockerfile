@@ -30,6 +30,7 @@ RUN pip3 install --no-cache-dir --disable-pip-version-check \
         "pyheif==0.6.1" \
         "heif-image-plugin>=0.3.2" \
         yt-dlp \
+	requests \
         "pillow-avif-plugin~=1.1.0"
 RUN apk --no-cache del py3-pip
 
@@ -49,6 +50,7 @@ RUN apk --no-cache add \
         pytest-pgsql \
         pytest-xdist \
         freezegun \
+	requests \
  && apk --no-cache del py3-pip \
  && addgroup app \
  && adduser -SDH -h /opt/app -g '' -G app app \
@@ -75,6 +77,7 @@ RUN apk --no-cache add \
     py3-waitress \
     && pip3 install --no-cache-dir --disable-pip-version-check \
     hupper \
+    requests \
     && mkdir -p /opt/app /data \
     && addgroup -g ${PGID} app \
     && adduser -SDH -h /opt/app -g '' -G app -u ${PUID} app \
@@ -107,6 +110,8 @@ RUN apk --no-cache add \
         dumb-init \
         py3-setuptools \
         py3-waitress \
+	py3-pip \
+ && pip3 install --no-cache-dir requests \
  && mkdir -p /opt/app /data \
  && addgroup -g ${PGID} app \
  && adduser -SDH -h /opt/app -g '' -G app -u ${PUID} app \

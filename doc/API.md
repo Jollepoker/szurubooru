@@ -1827,12 +1827,10 @@ data.
 
     Creates a new user using specified parameters. Names and passwords must
     match `user_name_regex` and `password_regex` from server's configuration,
-    respectively. Email address, rank and avatar fields are optional. Avatar
-    style can be either `gravatar` or `manual`. `manual` avatar style requires
-    client to pass also `avatar` file - see [file uploads](#file-uploads) for
-    details. If the rank is empty and the user happens to be the first user
-    ever created, become an administrator, whereas subsequent users will be
-    given the rank indicated by `default_rank` in the server's configuration.
+    respectively. Email address, rank and avatar fields are optional. If the 
+    rank is empty and the user happens to be the first user ever created,
+    become an administrator, whereas subsequent users will be given the rank
+    indicated by `default_rank` in the server's configuration.
 
 ## Updating user
 - **Request**
@@ -1877,9 +1875,7 @@ data.
     must match `user_name_regex` and `password_regex` from server's
     configuration, respectively. All fields are optional - update concerns only
     provided fields. To update last login time, see
-    [authentication](#authentication). Avatar style can be either `gravatar` or
-    `manual`. `manual` avatar style requires client to pass also `avatar`
-    file - see [file uploads](#file-uploads) for details. All fields except the
+    [authentication](#authentication). All fields except the
     [`version`](#versioning) are optional - update concerns only provided
     fields.
 
@@ -2143,7 +2139,6 @@ data.
     ```json5
     {
         "postCount": <post-count>,
-        "diskUsage": <disk-usage>,  // in bytes
         "featuredPost": <featured-post>,
         "featuringTime": <time>,
         "featuringUser": <user>,
@@ -2245,13 +2240,6 @@ A single user.
 
 - `<last-login-time>`: the last login time, formatted as per RFC 3339.
 - `<creation-time>`: the user registration time, formatted as per RFC 3339.
-- `<avatarStyle>`: how to render the user avatar.
-
-    Possible values:
-
-    - `"gravatar"`: the user uses Gravatar.
-    - `"manual"`: the user has uploaded a picture manually.
-
 - `<avatarUrl>`: the URL to the avatar.
 - `<comment-count>`: number of comments.
 - `<uploaded-post-count>`: number of uploaded posts.

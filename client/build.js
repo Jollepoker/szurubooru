@@ -31,7 +31,7 @@ const external_js = [
 ];
 
 const app_manifest = {
-    name: 'szurubooru',
+    name: 'NepBooru',
     icons: [
         {
             src: baseUrl() + 'img/android-chrome-192x192.png',
@@ -142,13 +142,7 @@ function bundleCss() {
     if (process.argv.includes('--gzip')) {
         gzipFile('./public/css/app.min.css');
     }
-
-    fs.copyFileSync(
-        './node_modules/font-awesome/css/font-awesome.min.css',
-        './public/css/vendor.min.css');
-    if (process.argv.includes('--gzip')) {
-        gzipFile('./public/css/vendor.min.css');
-    }
+    
 
     console.info('Bundled CSS');
 }
@@ -217,27 +211,16 @@ function bundleJs() {
 const environment = process.argv.includes('--watch') ? "development" : "production";
 
 function bundleConfig() {
-    function getVersion() {
-        let build_info = process.env.BUILD_INFO;
-        if (!build_info) {
-            try {
-                build_info = execSync('git describe --always --dirty --long --tags').toString();
-            } catch (e) {
-                console.warn('Cannot find build version');
-                build_info = 'unknown';
-            }
-        }
-        return build_info.trim();
-    }
     const config = {
         meta: {
-            version: getVersion(),
+            version: Math.floor(Date.now() / 1000),
             buildDate: new Date().toUTCString()
         },
         environment: environment
     };
 
     fs.writeFileSync('./js/.config.autogen.json', JSON.stringify(config));
+    fs.writeFileSync('./public/meta.json', JSON.stringify(config));
     console.info('Generated config file');
 }
 

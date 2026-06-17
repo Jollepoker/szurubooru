@@ -97,6 +97,7 @@ def delete_user(ctx: rest.Context, params: Dict[str, str]) -> rest.Response:
     versions.verify_version(user, ctx)
     infix = "self" if ctx.user.user_id == user.user_id else "any"
     auth.verify_privilege(ctx.user, "users:delete:%s" % infix)
+    users.delete_user_avatar(user)
     ctx.session.delete(user)
     ctx.session.commit()
     return {}

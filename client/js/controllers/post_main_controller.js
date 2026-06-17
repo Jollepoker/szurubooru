@@ -50,12 +50,12 @@ class PostMainController extends BasePostController {
 
                 // preload nearby posts
                 if (prevPostId) {
-                    Post.get(prevPostId, { noProgress: true }).then(misc.preloadPostImages);
-                    PostList.getAround(prevPostId, parameters ? parameters.query : null, { noProgress: true });
+                    void Post.get(prevPostId, { noProgress: true }).then(misc.preloadPostImages);
+                    void PostList.getAround(prevPostId, parameters ? parameters.query : null, { noProgress: true });
                 }
                 if (nextPostId) {
-                    Post.get(nextPostId, { noProgress: true }).then(misc.preloadPostImages);
-                    PostList.getAround(nextPostId, parameters ? parameters.query : null, { noProgress: true });
+                    void Post.get(nextPostId, { noProgress: true }).then(misc.preloadPostImages);
+                    void PostList.getAround(nextPostId, parameters ? parameters.query : null, { noProgress: true });
                 }
 
                 this._post = post;

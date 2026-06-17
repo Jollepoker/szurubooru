@@ -59,7 +59,6 @@ def test_info_api(
     with fake_datetime("2016-01-01 13:00"):
         assert api.info_api.get_info(context_factory(user=auth_user)) == {
             "postCount": 2,
-            "diskUsage": 3,
             "featuredPost": None,
             "featuringTime": None,
             "featuringUser": None,
@@ -70,7 +69,6 @@ def test_info_api(
     with fake_datetime("2016-01-03 12:59"):
         assert api.info_api.get_info(context_factory(user=auth_user)) == {
             "postCount": 2,
-            "diskUsage": 3,  # still 3 - it's cached
             "featuredPost": None,
             "featuringTime": None,
             "featuringUser": None,
@@ -80,7 +78,6 @@ def test_info_api(
     with fake_datetime("2016-01-03 13:01"):
         assert api.info_api.get_info(context_factory(user=auth_user)) == {
             "postCount": 2,
-            "diskUsage": 6,  # cache expired
             "featuredPost": None,
             "featuringTime": None,
             "featuringUser": None,
@@ -90,7 +87,6 @@ def test_info_api(
     with fake_datetime("2016-01-03 13:01"):
         assert api.info_api.get_info(context_factory(user=anon_user)) == {
             "postCount": 2,
-            "diskUsage": 6,  # cache expired
             "serverTime": datetime(2016, 1, 3, 13, 1),
             "config": expected_config_key,
         }

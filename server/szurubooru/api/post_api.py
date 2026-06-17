@@ -1,18 +1,17 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from szurubooru import db, errors, model, rest, search
+from szurubooru import db, errors, model, rest, search, config
 from szurubooru.func import (
     auth,
     favorites,
-    mime,
     posts,
     scores,
     serialization,
     snapshots,
-    tags,
     versions,
 )
+from szurubooru.jsonl_writer import enqueue_export
 
 _search_executor_config = search.configs.PostSearchConfig()
 _search_executor = search.Executor(_search_executor_config)
@@ -99,6 +98,7 @@ def create_post(
             None if anonymous else ctx.user,
         )
     ctx.session.commit()
+    enqueue_export(post.post_id, "update")
     return _serialize_post(ctx, post)
 
 
@@ -169,6 +169,7 @@ def update_post(ctx: rest.Context, params: Dict[str, str]) -> rest.Response:
     ctx.session.flush()
     snapshots.modify(post, ctx.user)
     ctx.session.commit()
+    enqueue_export(post.post_id, "update")
     return _serialize_post(ctx, post)
 
 
@@ -180,6 +181,7 @@ def delete_post(ctx: rest.Context, params: Dict[str, str]) -> rest.Response:
     snapshots.delete(post, ctx.user)
     posts.delete(post)
     ctx.session.commit()
+    enqueue_export(post.post_id, "delete")
     return {}
 
 
@@ -199,6 +201,7 @@ def merge_posts(
     posts.merge_posts(source_post, target_post, replace_content)
     snapshots.merge(source_post, target_post, ctx.user)
     ctx.session.commit()
+    enqueue_export(post.post_id, "update")
     return _serialize_post(ctx, target_post)
 
 
@@ -236,6 +239,7 @@ def set_post_score(ctx: rest.Context, params: Dict[str, str]) -> rest.Response:
     score = ctx.get_param_as_int("score")
     scores.set_score(post, ctx.user, score)
     ctx.session.commit()
+    enqueue_export(post.post_id, "update")
     return _serialize_post(ctx, post)
 
 
@@ -247,6 +251,7 @@ def delete_post_score(
     post = _get_post(params)
     scores.delete_score(post, ctx.user)
     ctx.session.commit()
+    enqueue_export(post.post_id, "update")
     return _serialize_post(ctx, post)
 
 

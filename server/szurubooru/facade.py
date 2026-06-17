@@ -3,6 +3,7 @@ import os
 import threading
 import time
 from typing import Any, Callable, Type
+from .jsonl_writer import rebuild_jsonl_files, start_export_thread
 
 import coloredlogs
 import sqlalchemy as sa
@@ -147,6 +148,9 @@ def create_app() -> Callable[[Any, Any], Any]:
 
     for migration in _live_migrations:
         threading.Thread(target=migration, daemon=False).start()
+
+    rebuild_jsonl_files()
+    start_export_thread()
 
     db.session.commit()
 

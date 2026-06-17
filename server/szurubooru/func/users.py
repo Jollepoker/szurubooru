@@ -1,11 +1,12 @@
 import re
+import os
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import sqlalchemy as sa
 
 from szurubooru import config, db, errors, model, rest
-from szurubooru.func import auth, files, images, serialization, util
+from szurubooru.func import auth, files, images, serialization, util, bunny
 
 
 class UserNotFoundError(errors.NotFoundError):
@@ -42,18 +43,17 @@ def get_avatar_path(user_name: str) -> str:
 
 def get_avatar_url(user: model.User) -> str:
     assert user
-    if user.avatar_style == user.AVATAR_GRAVATAR:
-        if not user.email and not user.name:
-            return ""
-        return "https://gravatar.com/avatar/%s?d=retro&s=%d" % (
-            util.get_md5((user.email or user.name).lower()),
-            config.config["thumbnails"]["avatar_width"],
-        )
-    if not user.name:
+    if user.avatar_style == user.AVATAR_GRAVATAR or not user.name:
         return ""
-    return "%s/avatars/%s.png" % (
+
+    path = "avatars/%s.png" % (user.name.lower())
+
+    if "bunny" in config.config:
+        return bunny.public_url(config.config, path, user.version)
+
+    return "%s/%s" % (
         config.config["data_url"].rstrip("/"),
-        user.name.lower(),
+        path,
     )
 
 
@@ -302,6 +302,7 @@ def update_user_avatar(
     assert user
     if avatar_style == "gravatar":
         user.avatar_style = user.AVATAR_GRAVATAR
+        files.delete("avatars/" + user.name.lower() + ".png")
     elif avatar_style == "manual":
         user.avatar_style = user.AVATAR_MANUAL
         avatar_path = "avatars/" + user.name.lower() + ".png"
@@ -315,12 +316,20 @@ def update_user_avatar(
             int(config.config["thumbnails"]["avatar_height"]),
         )
         files.save(avatar_path, image.to_png())
+        full_path = files._get_full_path(avatar_path)
+        if os.path.exists(full_path):
+            os.unlink(full_path)
     else:
         raise InvalidAvatarError(
             "Avatar style %r is invalid. Valid avatar styles: %r."
             % (avatar_style, ["gravatar", "manual"])
         )
 
+def delete_user_avatar(user: model.User) -> None:
+    assert user
+    if user.avatar_style == user.AVATAR_MANUAL:
+        avatar_path = "avatars/" + user.name.lower() + ".png"
+        files.delete(avatar_path)
 
 def bump_user_login_time(user: model.User) -> None:
     assert user

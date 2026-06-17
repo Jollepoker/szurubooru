@@ -52,6 +52,7 @@
                         <% } %>
                         <% if (ctx.canBulkDelete && ctx.parameters && ctx.parameters.delete) { %>
                             <a href class='delete-flipper'>
+                                <i class="fa-solid fa-minus"></i>
                             </a>
                         <% } %>
                     </span>

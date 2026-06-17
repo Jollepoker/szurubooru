@@ -38,17 +38,24 @@ class Api extends events.EventTarget {
     }
 
     get(url, options) {
-        if (url in this.cache) {
-            return new Promise((resolve, reject) => {
-                resolve(this.cache[url]);
-            });
+        const key = url.replace(/\/+$/, "");
+
+        if (key in this.cache) {
+            return this.cache[key];
         }
-        return this._wrappedRequest(url, request.get, {}, {}, options).then(
-            (response) => {
-                this.cache[url] = response;
-                return Promise.resolve(response);
-            }
-        );
+        
+        const promise = this._wrappedRequest(url, request.get, {}, {}, options)
+            .then((response) => {
+                this.cache[key] = Promise.resolve(response);
+                return response;
+            })
+            .catch(err => {
+                delete this.cache[key];
+                throw err;
+            });
+
+        this.cache[key] = promise;
+        return promise;
     }
 
     post(url, data, files, options) {

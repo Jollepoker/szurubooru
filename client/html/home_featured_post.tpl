@@ -1,4 +1,6 @@
-<div class='post-container'></div>
+<a href="/post/<%= ctx.featuredPost.id %>">
+    <div class='post-container'></div>
+</a>
 <% if (ctx.featuredPost) { %>
     <aside>
         Featured&nbsp;post:&nbsp;<%= ctx.makePostLink(ctx.featuredPost.id, true) %>,<wbr>

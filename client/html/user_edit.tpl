@@ -53,7 +53,7 @@
                     <div id='avatar-content'></div>
                     <div id='avatar-radio'>
                         <%= ctx.makeRadio({
-                            text: 'Gravatar',
+                            text: 'None',
                             name: 'avatar-style',
                             value: 'gravatar',
                             selectedValue: ctx.user.avatarStyle,

@@ -113,12 +113,23 @@ class PostsPageView extends events.EventTarget {
     _evtBulkToggleDeleteClick(e, post) {
         e.preventDefault();
         const linkNode = e.target;
-        linkNode.classList.toggle("delete");
+        const targetLinkNode = linkNode.classList.contains("delete-flipper")
+            ? linkNode
+            : linkNode.closest(".delete-flipper");
+        if (!targetLinkNode) {
+            return;
+        }
+        const isDeleting = targetLinkNode.classList.toggle("delete");
+        if (isDeleting) {
+            targetLinkNode.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
+        } else {
+            targetLinkNode.innerHTML = '<i class="fa-solid fa-minus"></i>';
+        }
         this.dispatchEvent(
             new CustomEvent("markForDeletion", {
                 detail: {
                     post,
-                    delete: linkNode.classList.contains("delete"),
+                    delete: targetLinkNode.classList.contains("delete"),
                 },
             })
         );

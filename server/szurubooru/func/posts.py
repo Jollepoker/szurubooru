@@ -1,7 +1,9 @@
+import os
 import hmac
 import logging
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Tuple
+from szurubooru.func import bunny
 
 import sqlalchemy as sa
 
@@ -22,6 +24,8 @@ from szurubooru.func import (
 )
 
 logger = logging.getLogger(__name__)
+
+_post_static_cache = {}
 
 
 EMPTY_PIXEL = (
@@ -107,21 +111,29 @@ def get_post_security_hash(id: int) -> str:
 
 def get_post_content_url(post: model.Post) -> str:
     assert post
-    return "%s/posts/%d_%s.%s" % (
-        config.config["data_url"].rstrip("/"),
+    path = "posts/%d_%s.%s" % (
         post.post_id,
         get_post_security_hash(post.post_id),
         mime.get_extension(post.mime_type) or "dat",
     )
 
+    if "bunny" in config.config:
+        return bunny.public_url(config.config, path, post.version)
+
+    return "%s/%s" % (config.config["data_url"].rstrip("/"), path)
+
 
 def get_post_thumbnail_url(post: model.Post) -> str:
     assert post
-    return "%s/generated-thumbnails/%d_%s.jpg" % (
-        config.config["data_url"].rstrip("/"),
+    path = "generated-thumbnails/%d_%s.jpg" % (
         post.post_id,
         get_post_security_hash(post.post_id),
     )
+
+    if "bunny" in config.config:
+        return bunny.public_url(config.config, path, post.version)
+
+    return "%s/%s" % (config.config["data_url"].rstrip("/"), path)
 
 
 def get_post_content_path(post: model.Post) -> str:
@@ -454,40 +466,52 @@ def _after_post_update(
     _mapper: Any, _connection: Any, post: model.Post
 ) -> None:
     _sync_post_content(post)
-
-
-@sa.events.event.listens_for(model.Post, "before_delete")
-def _before_post_delete(
-    _mapper: Any, _connection: Any, post: model.Post
-) -> None:
-    if post.post_id:
-        if config.config["delete_source_files"]:
-            files.delete(get_post_content_path(post))
-            files.delete(get_post_thumbnail_path(post))
+    from szurubooru.func import files
+    if hasattr(post, "__old_content_path"):
+        old_content = getattr(post, "__old_content_path", None)
+        if old_content:
+            files.delete(old_content)
+        delattr(post, "__old_content_path")
 
 
 def _sync_post_content(post: model.Post) -> None:
     regenerate_thumb = False
+    post.__content_for_thumbnail = None
 
     if hasattr(post, "__content"):
         content = getattr(post, "__content")
-        files.save(get_post_content_path(post), content)
+        path = get_post_content_path(post)
+        files.save(path, content)
+        post.__content_for_thumbnail = content
+        full_path = files._get_full_path(path)
+        if os.path.exists(full_path):
+            os.unlink(full_path)
         delattr(post, "__content")
         regenerate_thumb = True
 
     if hasattr(post, "__thumbnail"):
-        if getattr(post, "__thumbnail"):
-            files.save(
-                get_post_thumbnail_backup_path(post),
-                getattr(post, "__thumbnail"),
-            )
+        thumb = getattr(post, "__thumbnail")
+        path = get_post_thumbnail_backup_path(post)
+        post.__content_for_thumbnail = thumb
+
+        if thumb:
+            files.save(path, thumb)
+            full_path = files._get_full_path(path)
+            if os.path.exists(full_path):
+                os.unlink(full_path)
         else:
-            files.delete(get_post_thumbnail_backup_path(post))
+            files.delete(path)
         delattr(post, "__thumbnail")
         regenerate_thumb = True
 
     if regenerate_thumb:
         generate_post_thumbnail(post)
+        full_thumb_path = files._get_full_path(get_post_thumbnail_path(post))
+        if os.path.exists(full_thumb_path):
+            os.unlink(full_thumb_path)
+
+    if hasattr(post, "__content_for_thumbnail"):
+        delattr(post, "__content_for_thumbnail")
 
 
 def generate_alternate_formats(
@@ -609,6 +633,14 @@ def update_post_content(post: model.Post, content: Optional[bytes]) -> None:
     if not content:
         raise InvalidPostContentError("Post content missing.")
 
+    if post.post_id:
+        from szurubooru.func.posts import (
+            get_post_content_path,
+        )
+        setattr(post, "__old_content_path", get_post_content_path(post))
+    else:
+        setattr(post, "__old_content_path", None)
+
     update_signature = False
     post.mime_type = mime.get_mime_type(content)
     if mime.is_flash(post.mime_type):
@@ -682,6 +714,8 @@ def generate_post_thumbnail(post: model.Post) -> None:
     if files.has(get_post_thumbnail_backup_path(post)):
         content = files.get(get_post_thumbnail_backup_path(post))
     else:
+        content = getattr(post, "__content_for_thumbnail", None)
+    if not content:
         content = files.get(get_post_content_path(post))
     try:
         assert content
@@ -805,8 +839,14 @@ def feature_post(post: model.Post, user: Optional[model.User]) -> None:
 
 def delete(post: model.Post) -> None:
     assert post
+    logger.info("[POST DELETE] delete_source_files = %s", config.config.get("delete_source_files"))
+    if post.post_id:
+        logger.info("[POST DELETE] Reached file deletion block for post %s", post.post_id)
+        if config.config.get("delete_source_files"):
+            files.delete(get_post_content_path(post))
+            files.delete(get_post_thumbnail_path(post))
+        files.delete(get_post_thumbnail_backup_path(post))
     db.session.delete(post)
-
 
 def merge_posts(
     source_post: model.Post, target_post: model.Post, replace_content: bool
@@ -913,6 +953,15 @@ def merge_posts(
 
     # fixes unknown issue with SA's cascade deletions
     purge_post_signature(source_post)
+
+    from szurubooru.func import files
+    from szurubooru.func.posts import (
+        get_post_content_path,
+        get_post_thumbnail_path,
+    )
+
+    files.delete(get_post_content_path(source_post))
+    files.delete(get_post_thumbnail_path(source_post))
     delete(source_post)
     db.session.flush()
 

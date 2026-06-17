@@ -13,3 +13,12 @@ server/**/lib/
 server/**/bin/
 server/**/pyvenv.cfg
 __pycache__/
+
+# Venv
+venv/
+
+# Database
+pgdata/
+
+# Data
+data/
