@@ -10,7 +10,6 @@ const TagAutoCompleteControl = require("../controls/tag_auto_complete_control.js
 
 const template = views.getTemplate("home");
 const footerTemplate = views.getTemplate("home-footer");
-const featuredPostTemplate = views.getTemplate("home-featured-post");
 
 class HomeView {
     constructor(ctx) {
@@ -54,41 +53,12 @@ class HomeView {
         );
     }
 
-    setFeaturedPost(postInfo) {
-        views.replaceContent(
-            this._postInfoContainerNode,
-            featuredPostTemplate(postInfo)
-        );
-        if (this._postContainerNode && postInfo.featuredPost) {
-            this._postContentControl = new PostContentControl(
-                this._postContainerNode,
-                postInfo.featuredPost,
-                () => {
-                    return [window.innerWidth * 0.8, window.innerHeight * 0.7];
-                },
-                "fit-both"
-            );
-
-            this._postNotesOverlay = new PostNotesOverlayControl(
-                this._postContainerNode.querySelector(".post-overlay"),
-                postInfo.featuredPost
-            );
-
-            if (
-                postInfo.featuredPost.type === "video" ||
-                postInfo.featuredPost.type === "flash"
-            ) {
-                this._postContentControl.disableOverlay();
-            }
-        }
-    }
-
     get _footerContainerNode() {
         return this._hostNode.querySelector(".footer-container");
     }
 
-    get _postInfoContainerNode() {
-        return this._hostNode.querySelector(".post-info-container");
+    get _nepBannerContainerNode() {
+        return this._hostNode.querySelector(".nep-banner-container");
     }
 
     get _postContainerNode() {

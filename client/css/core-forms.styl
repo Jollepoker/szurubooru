@@ -22,7 +22,7 @@ form:not(.horizontal)
     .hint
         margin-top: 0.2em
         margin-bottom: 0
-        color: $inactive-link-color
+        color: $text-color-contrast
         font-size: 80%
         line-height: 120%
 
@@ -199,14 +199,14 @@ input[type=number]
     text-overflow: ellipsis
     width: 100%
     box-sizing: border-box
-    border: 2px solid $input-enabled-border-color
+    border: 5px solid $input-enabled-border-color
     background: $input-enabled-background-color
     color: $input-enabled-text-color
     box-shadow: none /* :-moz-submit-invalid on FF */
     transition: border-color 0.1s linear, background-color 0.1s linear
 
     &:disabled
-        border: 2px solid $input-disabled-border-color
+        border: 5px solid $input-disabled-border-color
         background: $input-disabled-background-color
         color: $input-disabled-text-color
 
@@ -283,18 +283,20 @@ input[type=button],
 input[type=submit]
     cursor: pointer
     font-size: 100%
-    padding: 0.2em 0.7em
+    font-weight: bolder
+    padding: 0.4em 0.7em
     border-radius: 0
-    border: 2px solid $button-enabled-background-color
+    border: 2px solid $button-enabled-border-color
     background: $button-enabled-background-color
     color: $button-enabled-text-color
     outline: 0 /* something on Chrome */
     -moz-appearance: none
     -webkit-appearance: none
+    transition: color 0.1s
 
     &:disabled
         cursor: default
-        border-color: $button-disabled-background-color
+        border-color: $button-disabled-border-color 
         background-color: $button-disabled-background-color
         color: $button-disabled-text-color
 
@@ -305,6 +307,9 @@ input[type=submit]
 
     &:focus
         border: 2px solid $text-color
+
+    &:hover
+        color: $text-color-contrast
 
 select:-moz-focusring
     text-shadow: 0
@@ -322,7 +327,7 @@ input::-moz-focus-inner
     .file-dropper
         display: block
         background: $window-color
-        border: 3px dashed #eee
+        border: 3px dashed $upload-border-color
         padding: 0.3em 0.5em
         line-height: 140%
         text-align: center

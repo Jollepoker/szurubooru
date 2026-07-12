@@ -1,8 +1,4 @@
 @import colors
-$comment-header-background-color = $top-navigation-color
-$comment-header-background-color-darktheme = $top-navigation-color-darktheme
-
-$comment-border-color = #DDD
 
 .comment-container
     padding: 0 0 0 60px
@@ -44,10 +40,14 @@ $comment-border-color = #DDD
                         border: 1px solid transparent
                         a
                             padding: 0 1em
+
                         &.active
                             background: $window-color
                             border: 1px solid $comment-border-color
                             border-bottom: 1px solid $window-color
+                        &:not(.active)
+                            a
+                                color: $comment-header-color
 
             nav.readonly
                 padding: 0 1em
@@ -81,9 +81,16 @@ $comment-border-color = #DDD
                 border: 0.75em solid transparent
                 border-right: 0.75em solid $comment-header-background-color
 
-            .edit, .delete, .score-container a, .nickname a
+            .edit, .delete, .score-container a, .score-container span, .nickname a, .date
                 &:not(.inactive)
-                    color: mix($main-color, $inactive-link-color)
+                    color: $comment-header-color
+            .edit, .delete, .score-container a, .nickname a, .preview a
+                &:hover
+                    color: $text-color-contrast !important
+
+            .nickname a
+                font-weight: bolder
+                font-size: 1.1em;
 
             i
                 margin-right: 0.3em
@@ -124,7 +131,7 @@ $comment-border-color = #DDD
                     border-bottom: 1px solid $window-color-darktheme
     .edit, .delete, .score-container a, .nickname a
         &:not(.inactive)
-            color: mix($main-color, $inactive-link-color-darktheme)
+            color: $comment-header-color
 
 .comment-content
     p
@@ -138,8 +145,6 @@ $comment-border-color = #DDD
 
     .sjis
         font-family: 'MS PGothic', 'ＭＳ Ｐゴシック', 'IPAMonaPGothic', 'Trebuchet MS', Verdana, Futura, Arial, Helvetica, sans-serif
-        background: #fbfbfb
-        color: #111
         font-size: 1em
         line-height: 1
         margin: 0
@@ -149,19 +154,24 @@ $comment-border-color = #DDD
         word-wrap: normal
 
     .spoiler
-        background: #eee
-        color: #eee
+        background: $text-color
+        color: $text-color
         &:hover
-            color: dimgray
+            background: transparent
+            color: $text-color
         &:before
             content: '['
-            color: #000
+            color: $window-color
         &:after
             content: ']'
-            color: #000
+            color: $window-color
+        &:hover:before
+            content: ''
+        &:hover:after
+            content: ''
 
     blockquote
-        border-left: 3px solid #eee
+        border-left: 3px solid $text-color
         margin-left: 0
         padding: 0.3em 0.3em 0.3em 0.7em
         background: #fafafa

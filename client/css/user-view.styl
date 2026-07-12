@@ -1,11 +1,21 @@
 @import colors
-$token-border-color = $active-tab-background-color
 
 #user
     width: 100%
     max-width: 35em
+
+    h1
+        color: $text-color-contrast
+
     nav.text-nav
         margin-bottom: 1.5em
+
+    #user-content-holder
+        color: $text-color-contrast
+        a
+            color: $window-color
+            &:hover
+                color: $text-color-contrast
 
     #user-summary
         .thumbnail
@@ -31,6 +41,8 @@ $token-border-color = $active-tab-background-color
                 float: right
                 width: 65%
                 margin-top: .5em
+                label
+                    color: $text-color
             #avatar-radio
                 float: left
                 width: 30%

@@ -1,11 +1,6 @@
 @import colors
 @import mixins
 
-$active-tab-text-color = $text-color
-$active-tab-text-color-darktheme = $text-color-darktheme
-$inactive-tab-text-color = $inactive-link-color
-$inactive-tab-text-color-darktheme = $inactive-link-color-darktheme
-
 /* latin */
 @font-face
     font-family: 'Open Sans';
@@ -13,6 +8,14 @@ $inactive-tab-text-color-darktheme = $inactive-link-color-darktheme
     font-weight: 400;
     src: local('Open Sans'), local('OpenSans'), url(../fonts/open_sans.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+
+@font-face
+    font-family: 'Bilderberg';
+    src:
+        url(../fonts/bilderberg.woff2) format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 
 /* make <body> cover entire viewport */
 html
@@ -43,6 +46,8 @@ h1, h2, h3
 
 h1
     font-size: 2em
+    font-family: 'Bilderberg', sans-serif
+    line-height: 1
 
 h2
     font-size: 1.5em
@@ -68,6 +73,8 @@ a
         opacity: .5
     &:focus
         outline: 2px solid $main-color
+    &:hover
+        color: $text-color
     .vim-nav-hint
         position: absolute
         visibility: hidden
@@ -106,6 +113,7 @@ form .fa-question-circle-o
                     background-color: $scrollbar-bg-color
                 &::-webkit-scrollbar-thumb
                     background-color: $scrollbar-thumb-color
+                
     >.content-wrapper:not(.transparent)
         background: $top-navigation-color
         padding: 1.8em
@@ -129,6 +137,10 @@ hr
 .darktheme hr
     border-top: 1px solid darken($line-color, 25%)
 
+#top-navigation-holder
+    background-color: #dec481
+    padding-bottom: 1em
+
 nav
     ul
         list-style-type: none
@@ -139,8 +151,10 @@ nav
             display: block
             padding: 0
             margin: 0
+            
             a
                 display: inline-block
+                font-weight: bolder
             img
                 margin: 0
                 vertical-align: top /* fix ghost margin under the image */
@@ -155,7 +169,7 @@ nav
             li a
                 padding: 0 1.2em
             li:not(.active) a
-                color: $inactive-tab-text-color
+                color: $inactive-link-color-contrast
             li:hover:not(.active) a
                 color: $active-tab-text-color
             li.active a
@@ -191,6 +205,7 @@ nav
                     max-width: 50vw
                     overflow: hidden
                     text-overflow: ellipsis
+                    font-weight: bolder
                 .toggle-icon
                     display: block
                     float: right
@@ -259,26 +274,32 @@ a .access-key
         text-align: left
         padding: 0.5em 1em
         &.info
-            border: 1px solid $message-info-border-color
+            border: 3px solid $message-info-border-color
             background: $message-info-background-color
+            color: $message-info-text-color
         &.error
-            border: 1px solid $message-error-border-color
+            border: 3px solid $message-error-border-color
             background: $message-error-background-color
+            color: $message-error-text-color
         &.success
-            border: 1px solid $message-success-border-color
+            border: 3px solid $message-success-border-color
             background: $message-success-background-color
+            color: $message-success-text-color
 
 .darktheme .messages
     .message
         &.info
-            border: 1px solid darken($message-info-border-color, 30%)
+            border: 3px solid darken($message-info-border-color, 30%)
             background: darken($message-info-background-color, 60%)
+            color: lighten($message-info-text-color, 80%)
         &.error
-            border: 1px solid darken($message-error-border-color, 30%)
+            border: 3px solid darken($message-error-border-color, 30%)
             background: darken($message-error-background-color, 60%)
+            color: lighten($message-error-text-color, 80%)
         &.success
-            border: 1px solid darken($message-success-border-color, 30%)
+            border: 3px solid darken($message-success-border-color, 30%)
             background: darken($message-success-background-color, 80%)
+            color: lighten($message-success-text-color, 80%)
 
 .thumbnail
     /*background-image: attr(data-src url)*/ /* not available yet */

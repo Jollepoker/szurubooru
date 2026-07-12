@@ -45,8 +45,8 @@ const app_manifest = {
         }
     ],
     start_url: baseUrl(),
-    theme_color: '#24aadd',
-    background_color: '#ffffff',
+    theme_color: '#cba24f',
+    background_color: '#ffe89e',
     display: 'standalone'
 }
 
@@ -229,6 +229,7 @@ function bundleBinaryAssets() {
     console.info('Copied images');
 
     fs.copyFileSync('./fonts/open_sans.woff2', './public/fonts/open_sans.woff2')
+    fs.copyFileSync('./fonts/bilderberg.woff2', './public/fonts/bilderberg.woff2')
     for (let file of glob.sync('./node_modules/font-awesome/fonts/*.*')) {
         if (fs.lstatSync(file).isDirectory()) {
             continue;
@@ -261,6 +262,11 @@ function bundleWebAppFiles() {
     }))
         .then(() => {
             console.info('Generated webapp icons');
+        });
+
+    Jimp.read('./img/neptest.png')
+        .then(file => {
+            file.write('./public/img/neptest.png');
         });
 
     Promise.all(webapp_splash_screens.map(dim => {

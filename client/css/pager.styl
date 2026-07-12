@@ -25,6 +25,15 @@
                 background: $window-color
                 padding: 0 1em
                 z-index: 2
+    .page-nav
+        a
+            svg
+                color: $inactive-link-color
+        .active
+            a
+                background: $button-enabled-background-color
+                &:hover
+                    color: $text-color-contrast
 
 .darktheme .pager
     .page

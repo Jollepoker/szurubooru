@@ -1,8 +1,4 @@
 @import colors
-$upload-header-background-color = $top-navigation-color
-$upload-header-background-color-darktheme = $top-navigation-color-darktheme
-$upload-border-color = #DDD
-$cancel-button-color = tomato
 
 #post-upload
     form
@@ -90,6 +86,7 @@ $cancel-button-color = tomato
                     text-align: left
                     background: $upload-header-background-color
                     border-bottom: 1px solid $upload-border-color
+                    color: $upload-header-color
 
                     nav
                         &:first-of-type
@@ -165,9 +162,9 @@ $cancel-button-color = tomato
 
 
             &:first-child .move-up
-                color: $inactive-link-color
+                color: $upload-header-color
             &:last-child .move-down
-                color: $inactive-link-color
+                color: $upload-header-color
             .darktheme &:first-child .move-up
                 color: $inactive-link-color-darktheme
             .darktheme &:last-child .move-down

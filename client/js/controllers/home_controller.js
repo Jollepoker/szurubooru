@@ -25,11 +25,6 @@ class HomeController {
                 this._homeView.setStats({
                     postCount: info.postCount,
                 });
-                this._homeView.setFeaturedPost({
-                    featuredPost: info.featuredPost,
-                    featuringUser: info.featuringUser,
-                    featuringTime: info.featuringTime,
-                });
             },
             (error) => this._homeView.showError(error.message)
         );

@@ -1,3 +1,5 @@
+@import colors
+
 #tag
     width: 100%
     max-width: 40em
@@ -5,8 +7,15 @@
         word-break: break-all
         line-height: 130%
         margin-top: 0
+        color: $text-color-contrast
     form
         width: 100%
+    .tag-content-holder .content-wrapper
+        color: $text-color-contrast
+        a
+            color: $window-color
+            &:hover
+                color: $text-color-contrast
     .tag-edit
         textarea
             height: 10em

@@ -4,13 +4,18 @@
         <h1><%- ctx.name %></h1>
     </header>
     <% if (ctx.canListPosts) { %>
-        <form class='horizontal'>
-            <%= ctx.makeTextInput({name: 'search-text', placeholder: 'enter some tags'}) %>
-            <input type='submit' value='Search'/>
-            <span class=sep>or</span>
-            <a href='<%- ctx.formatClientLink('posts') %>'>browse all posts</a>
+        <form>
+            <div class="inputs">
+                <%= ctx.makeTextInput({name: 'search-text', placeholder: 'Ex: neppienep'}) %>
+                <input type='submit' value='Search'/>
+            </div>
+            <a href='<%- ctx.formatClientLink('posts') %>'>Browse All Posts</a>
         </form>
     <% } %>
-    <div class='post-info-container'></div>
+    <div class='nep-banner-container'>
+        <div class='nep-image-container'>
+            <img src="img/neptest.png" />
+        </div>
+    </div>
     <footer class='footer-container'></footer>
 </div>

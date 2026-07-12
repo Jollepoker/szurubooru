@@ -8,11 +8,18 @@
         line-height: 1.3em
         tr:hover td
             background: $top-navigation-color
+            color: $text-color-contrast
+            a
+                color: $active-tab-text-color
         th, td
             padding: 0.1em 0.5em
         th
             white-space: nowrap
             background: $top-navigation-color
+            a
+                color: $inactive-link-color-contrast
+                &:hover
+                    color: $active-tab-text-color
         .names
             width: 84%
         .post-count

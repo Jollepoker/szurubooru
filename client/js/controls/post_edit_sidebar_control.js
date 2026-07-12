@@ -264,19 +264,6 @@ class PostEditSidebarControl extends events.EventTarget {
         this._thumbnailRemovalLinkNode.style.display = "none";
     }
 
-    _evtFeatureClick(e) {
-        e.preventDefault();
-        if (confirm("Are you sure you want to feature this post?")) {
-            this.dispatchEvent(
-                new CustomEvent("feature", {
-                    detail: {
-                        post: this._post,
-                    },
-                })
-            );
-        }
-    }
-
     _evtMergeClick(e) {
         e.preventDefault();
         this.dispatchEvent(

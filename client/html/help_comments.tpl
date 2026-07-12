@@ -1,4 +1,4 @@
-<p>Comments support Markdown syntax, extended by some handy tags:</p>
+<p>The following tags are supported:</p>
 
 <table>
     <tbody>
@@ -32,11 +32,3 @@
         </tr>
     </tbody>
 </table>
-
-<p>You can also specify the size of embedded images like this:</p>
-
-<ul>
-<li><code>![alt](href =WIDTHx "title")</code></li>
-<li><code>![alt](href =xHEIGHT "title")</code></li>
-<li><code>![alt](href =WIDTHxHEIGHT "title")</code></li>
-</ul>

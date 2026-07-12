@@ -1,12 +1,14 @@
 #home
+    display: block
+    width: 100%
     text-align: center !important
-    max-width: 100%
+    color: #b5985c
 
     header
         margin-bottom: 1em
         h1
-            line-height: initial
-            font-size: 2.5em
+            line-height: 1.5
+            font-size: 4em
             margin: 0
 
     .messages
@@ -15,19 +17,24 @@
             margin: 0 auto 2em auto
 
     form
-        display: inline-block
-        width: auto
+        display: block
+        width: 600px
+        max-width: 100%
         vertical-align: middle
-        margin: 0 0 2em 0
-        text-align: left
+        margin: 0 auto 1.5em auto
+        text-align: center
         white-space: nowrap
-        input
-            width: auto
-        .sep
-            margin: 0 0.75em
-        @media (max-width: 500px)
-            .sep, a
-                display: none
+        a
+            display: inline-block
+            margin-top: 0.5em
+            color: #b5985c
+        .inputs
+            display: flex
+            margin: 0 auto
+            input
+                margin: 0 0.25em
+            input[type=text]
+                border-radius: 5px
 
     .post-container
         margin-bottom: 2em
@@ -46,9 +53,17 @@
         font-size: 90%
 
     footer
-        line-height: 150%
-        font-size: 80%
+        .nep-explanation
+            font-size: 1.5em
+            color: #8d7237
+            @media (min-width: 600px)
+                font-size: 2em
+        .nep-quote
+            font-size: 1.5em
+            margin: 1em 0
         ul
+            line-height: 150%
+            font-size: 80%
             padding: 0
             text-align: center
             li
@@ -64,3 +79,25 @@
 
     .thumbnail
         margin-right: 0.4em
+    
+    .nep-banner-container
+        height: calc(1em + 220px)
+        
+        .nep-image-container
+            position: absolute;
+            left: 0
+            right: 0
+            height: 185px
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(225,199,131,1) 0%,
+                    rgba(225,199,131,0.8) 40%,
+                    rgba(225,199,131,0.6) 60%,
+                    rgba(225,199,131,0) 90%
+                ),
+                radial-gradient(#9f7c34 3px, transparent 0)
+            background-color: #cba24f
+            background-size: auto, 14px 14px
+            img
+                max-height: 220px

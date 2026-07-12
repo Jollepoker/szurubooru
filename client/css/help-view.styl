@@ -3,6 +3,12 @@
 #help
     width: 100%
     max-width: 45em
+    color: $text-color-contrast
+    .content
+        a
+            color: $window-color
+            &:hover
+                color: $text-color-contrast
     nav
         margin-bottom: 1.5em
     td, th
@@ -26,6 +32,13 @@
             text-align: left
     nav.secondary
         font-size: 0.95em
+        li:not(.active) a
+            color: $inactive-link-color-contrast
+        li:hover:not(.active) a
+            color: $active-tab-text-color
+        li.active a
+            background: $active-tab-background-color
+            color: $active-tab-text-color
 
     @media (max-width: 600px)
         th, thead
