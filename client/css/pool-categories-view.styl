@@ -3,6 +3,7 @@
 .content-wrapper.pool-categories
     width: 100%
     max-width: 45em
+    color: $text-color-contrast
     table
         border-spacing: 0
         width: 100%
@@ -17,6 +18,10 @@
                 text-align: center
             &.remove, &.set-default
                 white-space: pre
+            a
+                color: $window-color
+                &:hover
+                    color: $text-color-contrast
         th
             white-space: nowrap
             &:first-child
@@ -27,3 +32,8 @@
             display: none
     form
         width: auto
+    p
+        a
+            color: $window-color
+            &:hover
+                color: $text-color-contrast

@@ -6,7 +6,8 @@ Unrelated images will be removed.</p>
 
 <p>Examples of <strong>welcome</strong> content:</p>
 <ul>
-    <li>Any artwork/content Neppienep has made herself</li>
+    <li>Any artwork/content Neppienep has made herself no matter who or what
+    it depicts</li>
     <li>Fanwork or commissioned pieces of art depicting Neppienep</li>
     <li>Screenshots from Neppienep's streams</li>
     <li>IRL photos depicting meet and greets, merchendise, or fanworks. You 

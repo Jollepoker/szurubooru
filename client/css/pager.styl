@@ -26,14 +26,22 @@
                 padding: 0 1em
                 z-index: 2
     .page-nav
-        a
-            svg
-                color: $inactive-link-color
-        .active
-            a
-                background: $button-enabled-background-color
-                &:hover
-                    color: $text-color-contrast
+        ul
+            li
+                &:not(.active)
+                    a
+                        color: $inactive-link-color !important
+                        &:hover
+                                color: $main-color !important
+                        svg
+                            color: $inactive-link-color
+                            &:hover
+                                color: $main-color
+                &.active
+                    a
+                        background: $button-enabled-background-color
+                        &:hover
+                            color: $text-color-contrast
 
 .darktheme .pager
     .page
