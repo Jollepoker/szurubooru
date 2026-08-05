@@ -4,6 +4,9 @@
 of relation to the <a href='https://x.com/neppie_nep'>Vtuber Neppienep</a>.
 Unrelated images will be removed.</p>
 
+<p>Oh, and you can delete your account at any time. Posts you uploaded will
+stay, unless some angry admin removes them.</p>
+
 <p>Examples of <strong>welcome</strong> content:</p>
 <ul>
     <li>Any artwork/content Neppienep has made herself no matter who or what
@@ -42,11 +45,7 @@ its roots in Polish language and has onomatopeic meaning of scraping or
 scrubbing</a>. It is pronounced as <em>shoorubooru</em>. Because this fork of
 Szurubooru is dedicated to Neppienep, this version is called Nepbooru!</p>
 
-<p class='section'><strong>Registration</strong></p>
-
-<p>The e-mail you enter during account creation is only used for password
-reminders. Only you can see it (well, except the database staff&hellip;
-we won&rsquo;t spam your mailbox anyway).</p>
-
-<p>Oh, and you can delete your account at any time. Posts you uploaded will
-stay, unless some angry admin removes them.</p>
+<h2>Contact</h2>
+<p>If you need to get in contact with us for any reason, you can send an email
+to <i>nepbooru@gmail.com</i>. For example if you've lost access to your account
+or if you are an artist that would like your work removed from this website</p>

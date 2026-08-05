@@ -23,16 +23,6 @@
                     pattern: ctx.passwordPattern,
                 }) %>
             </li>
-            <li>
-                <%= ctx.makeEmailInput({
-                    text: 'Email',
-                    name: 'email',
-                    placeholder: 'optional',
-                }) %>
-                <p class='hint'>
-                    Used for password reminder.
-                </p>
-            </li>
         </ul>
 
         <div class='messages'></div>

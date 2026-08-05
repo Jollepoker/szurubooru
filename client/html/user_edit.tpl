@@ -26,16 +26,6 @@
                 </li>
             <% } %>
 
-            <% if (ctx.canEditEmail) { %>
-                <li>
-                    <%= ctx.makeEmailInput({
-                        text: 'Email',
-                        name: 'email',
-                        value: ctx.user.email,
-                    }) %>
-                </li>
-            <% } %>
-
             <% if (ctx.canEditRank) { %>
                 <li>
                     <%= ctx.makeSelect({

@@ -51,9 +51,6 @@ Promise.resolve()
             controllers.push(require("./controllers/home_controller.js"));
             controllers.push(require("./controllers/help_controller.js"));
             controllers.push(require("./controllers/auth_controller.js"));
-            controllers.push(
-                require("./controllers/password_reset_controller.js")
-            );
             controllers.push(require("./controllers/comments_controller.js"));
             controllers.push(require("./controllers/snapshots_controller.js"));
             controllers.push(
