@@ -25,6 +25,7 @@ class HomeController {
                 this._homeView.setStats({
                     postCount: info.postCount,
                 });
+                this._homeView.pickQuote();
             },
             (error) => this._homeView.showError(error.message)
         );
